@@ -1,8 +1,7 @@
 import { useRef, useState } from "react";
-import AttendanceView from "../components/attendanceView";
-
-import { Carousel, Modal, Radio } from "antd";
+import { Carousel, Modal, PageHeader, Radio } from "antd";
 import ActiveStudentsList from "../components/activeStudentsList";
+import { ClassSetupForm } from "../components/classSetupForm";
 
 export default function HomePage() {
   const [currentView, setCurrent] = useState(1);
@@ -10,12 +9,16 @@ export default function HomePage() {
 
   const [views] = useState([
     {
-      label: "Challenge 1",
+      label: "Class Setup",
       value: 1,
     },
     {
-      label: "Challenge 2",
+      label: "Challenge 1",
       value: 2,
+    },
+    {
+      label: "Challenge 2",
+      value: 3,
     },
   ]);
 
@@ -26,7 +29,7 @@ export default function HomePage() {
 
   return (
     <>
-      <AttendanceView />
+      {/* Navigation */}
       <Radio.Group
         onChange={goToView}
         options={views}
@@ -37,12 +40,15 @@ export default function HomePage() {
 
       <Carousel ref={carousel} dots={false}>
         <div>
-          <h2>Challenge 1</h2>
-          <ActiveStudentsList />
+          <PageHeader className="site-page-header" title="Class Setup" />
+          <ClassSetupForm />
+        </div>
+        <div>
+          <PageHeader className="site-page-header" title="Challenge 1" />
         </div>
 
         <div>
-          <h2>Challenge 2</h2>
+          <PageHeader className="site-page-header" title="Challenge 2" />
         </div>
       </Carousel>
     </>

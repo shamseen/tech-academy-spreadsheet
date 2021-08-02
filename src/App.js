@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getNames } from "./dataServices/mockNameService";
-import HomePage from "./pages/HomePage";
+import HomePage from "./views/HomePage";
 import "antd/dist/antd.css";
 
 export const DataContext = React.createContext();
@@ -24,6 +24,8 @@ export default function App() {
   return (
     <DataContext.Provider
       value={{
+        maxPts,
+        setMaxPts,
         showModal,
         toggleModal,
         roster,
