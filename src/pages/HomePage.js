@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import AttendanceView from "../components/attendanceView";
-import { Carousel, Steps, Radio } from "antd";
+
+import { Carousel, Modal, Radio } from "antd";
+import ActiveStudentsList from "../components/activeStudentsList";
 
 export default function HomePage() {
   const [currentView, setCurrent] = useState(1);
@@ -8,16 +10,12 @@ export default function HomePage() {
 
   const [views] = useState([
     {
-      label: "Attendance",
+      label: "Challenge 1",
       value: 1,
     },
     {
-      label: "Challenge 1",
-      value: 2,
-    },
-    {
       label: "Challenge 2",
-      value: 3,
+      value: 2,
     },
   ]);
 
@@ -28,6 +26,7 @@ export default function HomePage() {
 
   return (
     <>
+      <AttendanceView />
       <Radio.Group
         onChange={goToView}
         options={views}
@@ -38,11 +37,8 @@ export default function HomePage() {
 
       <Carousel ref={carousel} dots={false}>
         <div>
-          <AttendanceView />
-        </div>
-
-        <div>
           <h2>Challenge 1</h2>
+          <ActiveStudentsList />
         </div>
 
         <div>

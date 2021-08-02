@@ -7,7 +7,10 @@ export const DataContext = React.createContext();
 
 export default function App() {
   const [roster, updateRoster] = useState({});
-  const [activeStudents, setActive] = useState([]);
+
+  const [showModal, toggleModal] = useState(true);
+  const [maxPts, setMaxPts] = useState(0);
+  const [nextPt, setNextPt] = useState(maxPts);
 
   const getRoster = async () => {
     const data = await getNames();
@@ -21,10 +24,10 @@ export default function App() {
   return (
     <DataContext.Provider
       value={{
+        showModal,
+        toggleModal,
         roster,
         updateRoster,
-        activeStudents,
-        setActive,
       }}
     >
       <HomePage />
