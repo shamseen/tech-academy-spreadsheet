@@ -11,8 +11,7 @@ export const getNames = async () => {
     const response = await fetch(url);
     const json = await response.json();
 
-    const names = json.map((j) => j.first_name);
-
+    const names = processData(json);
     return names;
 
     // handling errors
@@ -20,3 +19,17 @@ export const getNames = async () => {
     console.log(err);
   }
 };
+
+// dictionary to hold student names, scores, attendance
+function processData(json) {
+  let data = {};
+
+  json.forEach((j) => {
+    data[j.first_name] = {
+      present: false,
+      scores: [],
+    };
+  });
+
+  return data;
+}

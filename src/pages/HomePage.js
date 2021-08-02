@@ -1,14 +1,15 @@
 import { useState } from "react";
+import AttendanceView from "../components/attendanceView";
 import { Steps, Radio } from "antd";
 
-export default function HomePage({ names }) {
+export default function HomePage() {
   const [currentView, setCurrent] = useState(0);
 
   const [views] = useState([
     {
       label: "Attendance",
       value: 0,
-      component: "attendance page",
+      component: <AttendanceView />,
     },
     {
       label: "Challenge 1",

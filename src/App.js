@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getNames } from "./dataServices/mockNameService";
 import HomePage from "./pages/HomePage";
 import "antd/dist/antd.css";
 
+export const DataContext = React.createContext();
+
 export default function App() {
-  const [roster, setRoster] = useState([]);
+  const [roster, updateRoster] = useState({});
   const [activeStudents, setActive] = useState([]);
 
   const getRoster = async () => {
     const data = await getNames();
-    setRoster(data);
+    updateRoster(data);
   };
 
   useEffect(() => {
@@ -17,8 +19,15 @@ export default function App() {
   }, []);
 
   return (
-    <>
-      <HomePage names={roster} />
-    </>
+    <DataContext.Provider
+      value={{
+        roster,
+        updateRoster,
+        activeStudents,
+        setActive,
+      }}
+    >
+      <HomePage />
+    </DataContext.Provider>
   );
 }
