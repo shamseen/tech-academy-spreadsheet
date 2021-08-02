@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Carousel, Modal, PageHeader, Radio } from "antd";
-import ActiveStudentsList from "../components/activeStudentsList";
 import { ClassSetupForm } from "../components/classSetupForm";
+import ChallengeView from "../components/challengeView";
 
 export default function HomePage() {
   const [currentView, setCurrent] = useState(1);
@@ -45,6 +45,7 @@ export default function HomePage() {
         </div>
         <div>
           <PageHeader className="site-page-header" title="Challenge 1" />
+          <ChallengeView />
         </div>
 
         <div>

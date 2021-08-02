@@ -15,12 +15,6 @@ export function ClassSetupForm() {
     console.log("roster updated");
   }, [roster]);
 
-  const saveAttendance = () => {
-    updateRoster({ ...rosterCopy });
-
-    toggleModal(!showModal);
-  };
-
   const updateAttendance = (name, info) => {
     // copying state var
     const copy = { ...rosterCopy };
@@ -29,15 +23,19 @@ export function ClassSetupForm() {
     copy[name].present = !info;
     updateCopy({ ...copy });
 
-    // max points to earn = number of present students
+    // max points to earn = number of students present
     setMaxPts(copy[name].present ? maxPts + 1 : maxPts - 1);
   };
+
   return (
-    <Form layout={"horizontal"}>
+    <Form layout={"horizontal"} size={"large"}>
+      {/* -- Attendance Input-- */}
       <Divider orientation="left">Attendance ({maxPts})</Divider>
       <Item name={"names"} label="Enter Names:">
         <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} />
       </Item>
+
+      {/* -- Student Absence Toggle -- */}
       <Item name={"roster"} label="Select Students Present:">
         <Space wrap>
           {Object.keys(rosterCopy).map((name) => {
@@ -45,7 +43,6 @@ export function ClassSetupForm() {
             return (
               <Button
                 key={name}
-                size="large"
                 onClick={() => updateAttendance(name, info)}
                 type={info ? "primary" : "ghost"}
               >
@@ -56,12 +53,19 @@ export function ClassSetupForm() {
         </Space>
       </Item>
 
+      {/* -- Challenges Input -- */}
       <Divider orientation="left">Challenges</Divider>
       <Item name={"challenges"} label="Enter Challenges:">
         <Input.TextArea />
       </Item>
+
+      {/* -- Submit Btn */}
       <Item>
-        <Button type="primary" htmlType="submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          onClick={() => updateRoster({ ...rosterCopy })}
+        >
           Submit
         </Button>
       </Item>
