@@ -15,25 +15,23 @@ export default function AttendanceView() {
   };
 
   return (
-    <>
-      <Card title="Attendance">
-        <Space wrap>
-          {Object.keys(roster).map((name) => {
-            const info = roster[name].present;
+    <Card title="Attendance">
+      <Space wrap>
+        {Object.keys(roster).map((name) => {
+          const info = roster[name].present;
 
-            return (
-              <Button
-                key={name}
-                size="large"
-                onClick={() => updateAttendance(name, info)}
-                type={info ? "primary" : "ghost"}
-              >
-                {name}
-              </Button>
-            );
-          })}
-        </Space>
-      </Card>
-    </>
+          return (
+            <Button
+              key={name}
+              size="large"
+              onClick={() => updateAttendance(name, info)}
+              type={info ? "primary" : "ghost"}
+            >
+              {name}
+            </Button>
+          );
+        })}
+      </Space>
+    </Card>
   );
 }

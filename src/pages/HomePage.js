@@ -1,47 +1,54 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import AttendanceView from "../components/attendanceView";
-import { Steps, Radio } from "antd";
+import { Carousel, Steps, Radio } from "antd";
 
 export default function HomePage() {
-  const [currentView, setCurrent] = useState(0);
+  const [currentView, setCurrent] = useState(1);
+  const carousel = useRef(null);
 
   const [views] = useState([
     {
       label: "Attendance",
-      value: 0,
-      component: <AttendanceView />,
+      value: 1,
     },
     {
       label: "Challenge 1",
-      value: 1,
-      component: "challenge 1",
+      value: 2,
     },
     {
       label: "Challenge 2",
-      value: 2,
-      component: "challenge 2",
+      value: 3,
     },
   ]);
+
+  const goToView = (e) => {
+    setCurrent(e.target.value);
+    carousel.current.goTo(currentView, false);
+  };
 
   return (
     <>
       <Radio.Group
-        onChange={(e) => setCurrent(e.target.value)}
+        onChange={goToView}
         options={views}
         value={currentView}
         optionType="button"
         buttonStyle="solid"
       />
 
-      {/* -- Title of action -- */}
-      <Steps current={currentView}>
-        {views.map((view) => {
-          return <Steps.Step key={view.title} />;
-        })}
-      </Steps>
+      <Carousel ref={carousel} dots={false}>
+        <div>
+          <AttendanceView />
+        </div>
 
-      {/* -- Action area (component) --- */}
-      <div>{views[currentView].component}</div>
+        <div>
+          <h2>Challenge 1</h2>
+        </div>
+
+        <div>
+          <h2>Challenge 2</h2>
+        </div>
+      </Carousel>
     </>
   );
 }
