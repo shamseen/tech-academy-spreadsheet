@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Button, Divider, Form, Input, Space } from "antd";
+import { Button, Divider, Form, Input, message, Space } from "antd";
 import { DataContext } from "../App";
 const { Item } = Form;
 
@@ -15,9 +15,9 @@ export function ClassSetupForm() {
     setChallenges([...names]);
   };
 
-  const handleNameEntry = (e) => {
+  const handleNameEntry = (str) => {
     // parsing input
-    const names = e.target.value.split("\n");
+    const names = str.target.value.split("\n");
     const temp = {};
 
     // setting up student records
@@ -29,6 +29,17 @@ export function ClassSetupForm() {
     });
     // updating roster copy
     updateCopy({ ...temp });
+  };
+
+  const handleSubmit = (formData) => {
+    // updating true roster
+    updateRoster({ ...rosterCopy });
+
+    // saving challenge names
+    handleChallengeEntry(formData.challenges);
+
+    // notifying user
+    message.success("Class information saved!");
   };
 
   const updateAttendance = (name, info) => {
@@ -44,11 +55,7 @@ export function ClassSetupForm() {
   };
 
   return (
-    <Form
-      layout={"horizontal"}
-      size={"large"}
-      onFinish={() => updateRoster({ ...rosterCopy })}
-    >
+    <Form layout={"horizontal"} size={"large"} onFinish={handleSubmit}>
       {/* -- Attendance Input-- */}
       <Divider orientation="left">Attendance ({maxPts})</Divider>
       <Item name={"names"} label="Enter Names:" onChange={handleNameEntry}>
