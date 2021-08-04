@@ -2,9 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Card, Space } from "antd";
 import { DataContext } from "../App";
 
-export default function ActiveStudentsList() {
+export default function ActiveStudentsList({ activeStudents, setActive }) {
   const { roster, updateRoster } = useContext(DataContext);
-  const [activeStudents, setActive] = useState({});
 
   // populating list of active students
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function ActiveStudentsList() {
   }, [roster]);
 
   return (
-    <Card title="In Progress">
+    <Card title="All Students">
       <Space wrap>
         {Object.keys(activeStudents).map((name) => {
           return (

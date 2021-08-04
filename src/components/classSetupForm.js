@@ -9,10 +9,30 @@ export function ClassSetupForm() {
 
   const [rosterCopy, updateCopy] = useState({});
 
+  const handleNameEntry = (e) => {
+    // parsing input
+    const names = e.target.value.split("\n");
+    const temp = {};
+
+    // setting up student records
+    names.forEach((n) => {
+      temp[n] = {
+        present: false,
+        scores: [],
+      };
+    });
+
+    console.log(temp);
+
+    // updating roster copy
+    updateCopy({ ...temp });
+    console.log(Object.keys(rosterCopy));
+  };
+
   // populating copy of the roster
   useEffect(() => {
     updateCopy({ ...roster });
-    console.log("roster updated");
+    console.log("roster copy updated");
   }, [roster]);
 
   const updateAttendance = (name, info) => {
@@ -28,10 +48,14 @@ export function ClassSetupForm() {
   };
 
   return (
-    <Form layout={"horizontal"} size={"large"}>
+    <Form
+      layout={"horizontal"}
+      size={"large"}
+      onFinish={() => updateRoster({ ...rosterCopy })}
+    >
       {/* -- Attendance Input-- */}
       <Divider orientation="left">Attendance ({maxPts})</Divider>
-      <Item name={"names"} label="Enter Names:">
+      <Item name={"names"} label="Enter Names:" onChange={handleNameEntry}>
         <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} />
       </Item>
 
@@ -39,7 +63,7 @@ export function ClassSetupForm() {
       <Item name={"roster"} label="Select Students Present:">
         <Space wrap>
           {Object.keys(rosterCopy).map((name) => {
-            const info = roster[name].present;
+            const info = rosterCopy[name].present;
             return (
               <Button
                 key={name}
@@ -61,11 +85,7 @@ export function ClassSetupForm() {
 
       {/* -- Submit Btn */}
       <Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          onClick={() => updateRoster({ ...rosterCopy })}
-        >
+        <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Item>
