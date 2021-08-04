@@ -1,13 +1,19 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Divider, Form, Input, Space } from "antd";
 import { DataContext } from "../App";
 const { Item } = Form;
 
 export function ClassSetupForm() {
-  const { showModal, toggleModal, roster, updateRoster, maxPts, setMaxPts } =
+  const { maxPts, setMaxPts, setChallenges, updateRoster } =
     useContext(DataContext);
 
   const [rosterCopy, updateCopy] = useState({});
+
+  const handleChallengeEntry = (e) => {
+    // parsing input
+    const names = e.target.value.split("\t");
+    setChallenges([...names]);
+  };
 
   const handleNameEntry = (e) => {
     // parsing input
@@ -21,19 +27,9 @@ export function ClassSetupForm() {
         scores: [],
       };
     });
-
-    console.log(temp);
-
     // updating roster copy
     updateCopy({ ...temp });
-    console.log(Object.keys(rosterCopy));
   };
-
-  // populating copy of the roster
-  useEffect(() => {
-    updateCopy({ ...roster });
-    console.log("roster copy updated");
-  }, [roster]);
 
   const updateAttendance = (name, info) => {
     // copying state var
@@ -79,7 +75,11 @@ export function ClassSetupForm() {
 
       {/* -- Challenges Input -- */}
       <Divider orientation="left">Challenges</Divider>
-      <Item name={"challenges"} label="Enter Challenges:">
+      <Item
+        name={"challenges"}
+        label="Enter Challenges:"
+        onChange={handleChallengeEntry}
+      >
         <Input.TextArea />
       </Item>
 
