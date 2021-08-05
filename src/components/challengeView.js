@@ -31,8 +31,10 @@ export default function ChallengeView() {
   return (
     <div>
       <Card title="Active students">
-        {challenges.length == 0 ? null : <GridTrackerPage />}
-        <Transfer
+        {activeStudents.length == 0 ? null : (
+          <GridTrackerPage activeStudentsArr={activeStudents} />
+        )}
+        {/* <Transfer
           dataSource={activeStudents}
           titles={["In Progress", "Complete"]}
           render={(student) => student.name} // render specifically the student's name
@@ -41,7 +43,7 @@ export default function ChallengeView() {
           // onSelectChange={}
           onChange={assignPts}
           oneWay={true}
-        />
+        /> */}
       </Card>
     </div>
   );

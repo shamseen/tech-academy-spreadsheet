@@ -25,9 +25,6 @@ export function ClassSetupForm() {
     names.forEach((n) => {
       temp[n] = {
         present: false,
-
-        // starting scores + total are all 0
-        scores: Array(challenges.length + 1).fill(0),
       };
     });
     // updating roster copy
