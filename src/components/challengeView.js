@@ -30,7 +30,7 @@ export default function ChallengeView() {
 
   return (
     <div>
-      <Card title="Active students">
+      <Card title="Score Tracker">
         {activeStudents.length == 0 ? null : (
           <GridTrackerPage activeStudentsArr={activeStudents} />
         )}

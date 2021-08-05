@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { Button, Divider, Form, Input, message, Space } from "antd";
+import { Button, Divider, Form, Input, Space } from "antd";
 import { DataContext } from "../App";
 const { Item } = Form;
 
 export function ClassSetupForm() {
-  const { maxPts, setMaxPts, challenges, setChallenges, updateRoster } =
+  const { maxPts, setMaxPts, setChallenges, updateRoster, toggleModal } =
     useContext(DataContext);
 
   const [rosterCopy, updateCopy] = useState({});
@@ -31,12 +31,14 @@ export function ClassSetupForm() {
     updateCopy({ ...temp });
   };
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = () => {
     // updating true roster
     updateRoster({ ...rosterCopy });
 
+    toggleModal(true);
+
     // notifying user
-    message.success("Class information saved!");
+    // message.success("Class information saved!");
   };
 
   const updateAttendance = (name, info) => {

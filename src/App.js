@@ -9,7 +9,7 @@ export const DataContext = React.createContext();
 export default function App() {
   const [roster, updateRoster] = useState({});
   const [challenges, setChallenges] = useState([]);
-  const [showModal, toggleModal] = useState(true);
+  const [showModal, toggleModal] = useState(false);
   const [maxPts, setMaxPts] = useState(0);
   const [nextPt, setNextPt] = useState(maxPts);
 
@@ -31,12 +31,12 @@ export default function App() {
           path="/"
           exact
           render={() => {
-            return <HomePage challenges={challenges} />;
+            return <HomePage showModal={showModal} />;
           }}
         />
 
         <Route
-          path="/scores"
+          path="/tracker"
           exact
           render={() => {
             return <ChallengeView />;
