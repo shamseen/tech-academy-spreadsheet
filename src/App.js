@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import HomePage from "./views/HomePage";
 import "antd/dist/antd.css";
+import ChallengeView from "./components/challengeView";
 
 export const DataContext = React.createContext();
 
@@ -24,7 +26,23 @@ export default function App() {
         updateRoster,
       }}
     >
-      <HomePage challenges={challenges} />
+      <Switch>
+        <Route
+          path="/"
+          exact
+          render={() => {
+            return <HomePage challenges={challenges} />;
+          }}
+        />
+
+        <Route
+          path="/scores"
+          exact
+          render={() => {
+            return <ChallengeView />;
+          }}
+        />
+      </Switch>
     </DataContext.Provider>
   );
 }

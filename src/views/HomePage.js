@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { Carousel, Modal, PageHeader, Radio } from "antd";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Modal, PageHeader } from "antd";
 import { ClassSetupForm } from "../components/classSetupForm";
-import ChallengeView from "../components/challengeView";
+import { Link } from "react-router-dom";
+import { DataContext } from "../App";
 
-export default function HomePage({ challenges }) {
+export default function HomePage() {
+  const { challenges, showModal } = useContext(DataContext);
   const [currentView, setCurrent] = useState(1);
   const carousel = useRef(null);
 
@@ -49,29 +51,19 @@ export default function HomePage({ challenges }) {
 
   return (
     <>
-      {/* Navigation */}
-      <Radio.Group
-        onChange={goToView}
-        options={views}
-        value={currentView}
-        optionType="button"
-        buttonStyle="solid"
-      />
-
-      <Carousel ref={carousel} dots={false}>
-        <div>
-          <PageHeader className="site-page-header" title="Class Setup" />
-          <ClassSetupForm />
-        </div>
-        <div>
-          <PageHeader className="site-page-header" title="Challenge 1" />
-          <ChallengeView />
-        </div>
-
-        <div>
-          <PageHeader className="site-page-header" title="Challenge 2" />
-        </div>
-      </Carousel>
+      <Link className="btn btn-outline-light" to="/scores">
+        <h3>See Table</h3>
+      </Link>
+      <div>
+        <PageHeader className="site-page-header" title="Class Setup" />
+        <ClassSetupForm />
+      </div>
+      <Modal
+      title=""
+      visible={showModal}
+      footer={}>
+        
+      </Modal>
     </>
   );
 }
