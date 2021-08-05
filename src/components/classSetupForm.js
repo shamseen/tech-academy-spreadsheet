@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
-import { Button, Divider, Form, Input, Space } from "antd";
+import { Button, Divider, Form, Input } from "antd";
 import { DataContext } from "../App";
+import AttendanceBtnGroup from "./attendanceBtnGroup";
+
 const { Item } = Form;
 
 export function ClassSetupForm() {
@@ -41,18 +43,6 @@ export function ClassSetupForm() {
     // message.success("Class information saved!");
   };
 
-  const updateAttendance = (name, info) => {
-    // copying state var
-    const copy = { ...rosterCopy };
-
-    // updating copy and state
-    copy[name].present = !info;
-    updateCopy({ ...copy });
-
-    // max points to earn = number of students present
-    setMaxPts(copy[name].present ? maxPts + 1 : maxPts - 1);
-  };
-
   return (
     <Form layout={"horizontal"} size={"large"} onFinish={handleSubmit}>
       {/* -- Challenges Input -- */}
@@ -73,20 +63,12 @@ export function ClassSetupForm() {
 
       {/* -- Student Absence Toggle -- */}
       <Item name={"roster"} label="Select Students Present:">
-        <Space wrap>
-          {Object.keys(rosterCopy).map((name) => {
-            const info = rosterCopy[name].present;
-            return (
-              <Button
-                key={name}
-                onClick={() => updateAttendance(name, info)}
-                type={info ? "primary" : "ghost"}
-              >
-                {name}
-              </Button>
-            );
-          })}
-        </Space>
+        <AttendanceBtnGroup
+          students={rosterCopy}
+          updateStudents={updateCopy}
+          setMaxPts={setMaxPts}
+          maxPts={maxPts}
+        />
       </Item>
 
       {/* -- Submit Btn -- */}
