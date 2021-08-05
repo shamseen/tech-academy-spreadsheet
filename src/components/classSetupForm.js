@@ -4,11 +4,12 @@ import { DataContext } from "../App";
 const { Item } = Form;
 
 export function ClassSetupForm() {
-  const { maxPts, setMaxPts, setChallenges, updateRoster } =
+  const { maxPts, setMaxPts, challenges, setChallenges, updateRoster } =
     useContext(DataContext);
 
   const [rosterCopy, updateCopy] = useState({});
 
+  // TO DO: add max pts to each challenge
   const handleChallengeEntry = (e) => {
     // parsing input
     const names = e.target.value.split("\t");
@@ -24,7 +25,6 @@ export function ClassSetupForm() {
     names.forEach((n) => {
       temp[n] = {
         present: false,
-        scores: [],
       };
     });
     // updating roster copy
@@ -34,9 +34,6 @@ export function ClassSetupForm() {
   const handleSubmit = (formData) => {
     // updating true roster
     updateRoster({ ...rosterCopy });
-
-    // saving challenge names
-    handleChallengeEntry(formData.challenges);
 
     // notifying user
     message.success("Class information saved!");
@@ -56,10 +53,20 @@ export function ClassSetupForm() {
 
   return (
     <Form layout={"horizontal"} size={"large"} onFinish={handleSubmit}>
+      {/* -- Challenges Input -- */}
+      <Divider orientation="left">Challenges</Divider>
+      <Item
+        name={"challenges"}
+        label="Enter Challenges:"
+        onChange={handleChallengeEntry}
+      >
+        <Input.TextArea />
+      </Item>
+
       {/* -- Attendance Input-- */}
       <Divider orientation="left">Attendance ({maxPts})</Divider>
       <Item name={"names"} label="Enter Names:" onChange={handleNameEntry}>
-        <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} />
+        <Input.TextArea autoSize={{ minRows: 3, maxRows: 3 }} />
       </Item>
 
       {/* -- Student Absence Toggle -- */}
@@ -80,17 +87,7 @@ export function ClassSetupForm() {
         </Space>
       </Item>
 
-      {/* -- Challenges Input -- */}
-      <Divider orientation="left">Challenges</Divider>
-      <Item
-        name={"challenges"}
-        label="Enter Challenges:"
-        onChange={handleChallengeEntry}
-      >
-        <Input.TextArea />
-      </Item>
-
-      {/* -- Submit Btn */}
+      {/* -- Submit Btn -- */}
       <Item>
         <Button type="primary" htmlType="submit">
           Submit

@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Transfer } from "antd";
 import { DataContext } from "../App";
+import GridTrackerPage from "../views/GridTrackerPage";
 
 export default function ChallengeView() {
-  const { maxPts, nextPt, roster } = useContext(DataContext);
+  const { maxPts, nextPt, roster, challenges } = useContext(DataContext);
   const [activeStudents, setActive] = useState([]);
 
   // populating list of active students
@@ -30,7 +31,10 @@ export default function ChallengeView() {
   return (
     <div>
       <Card title="Active students">
-        <Transfer
+        {activeStudents.length == 0 ? null : (
+          <GridTrackerPage activeStudentsArr={activeStudents} />
+        )}
+        {/* <Transfer
           dataSource={activeStudents}
           titles={["In Progress", "Complete"]}
           render={(student) => student.name} // render specifically the student's name
@@ -39,7 +43,7 @@ export default function ChallengeView() {
           // onSelectChange={}
           onChange={assignPts}
           oneWay={true}
-        />
+        /> */}
       </Card>
     </div>
   );
