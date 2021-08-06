@@ -13,6 +13,14 @@ export default function App() {
   const [maxPts, setMaxPts] = useState(0);
   const [nextPt, setNextPt] = useState(maxPts);
 
+  const resetData = () => {
+    updateRoster({});
+    toggleModal(false);
+    setMaxPts(0);
+    setNextPt(0);
+    setChallenges([]);
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -22,6 +30,7 @@ export default function App() {
         setMaxPts,
         showModal,
         toggleModal,
+        resetData,
         roster,
         updateRoster,
       }}

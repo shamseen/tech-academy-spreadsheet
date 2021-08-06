@@ -3,9 +3,11 @@ import { Button, Card, Modal, notification } from "antd";
 import { DataContext } from "../App";
 import GridTrackerPage from "../views/GridTrackerPage";
 import AttendanceBtnGroup from "./attendanceBtnGroup";
+import { Link } from "react-router-dom";
 
 export default function ChallengeView() {
-  const { maxPts, nextPt, roster, challenges } = useContext(DataContext);
+  const { maxPts, nextPt, roster, challenges, resetData } =
+    useContext(DataContext);
   const { updateRoster, setMaxPts } = useContext(DataContext);
   const [activeStudents, setActive] = useState([]);
   const [showModal, setModal] = useState(false);
@@ -37,13 +39,11 @@ export default function ChallengeView() {
     setActive([...active]);
   }, [roster]);
 
-  const assignPts = () => {};
-
   return (
     <div>
       <Card
         title="Score Tracker"
-        extra={
+        extra={[
           <Button
             type="primary"
             shape="round"
@@ -52,22 +52,15 @@ export default function ChallengeView() {
             }}
           >
             Update Attendance
-          </Button>
-        }
+          </Button>,
+          <Button danger type="text" onClick={resetData}>
+            <Link to="/">Start a new class</Link>
+          </Button>,
+        ]}
       >
         {activeStudents.length == 0 ? null : (
           <GridTrackerPage activeStudentsArr={activeStudents} />
         )}
-        {/* <Transfer
-          dataSource={activeStudents}
-          titles={["In Progress", "Complete"]}
-          render={(student) => student.name} // render specifically the student's name
-          // targetKeys={}
-          // selectedKeys={}
-          // onSelectChange={}
-          onChange={assignPts}
-          oneWay={true}
-        /> */}
       </Card>
       <Modal
         visible={showModal}
