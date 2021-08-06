@@ -1,11 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import { Card, Transfer } from "antd";
+import { Button, Card, Modal, notification } from "antd";
 import { DataContext } from "../App";
 import GridTrackerPage from "../views/GridTrackerPage";
+import AttendanceBtnGroup from "./attendanceBtnGroup";
 
 export default function ChallengeView() {
   const { maxPts, nextPt, roster, challenges } = useContext(DataContext);
+  const { updateRoster, setMaxPts } = useContext(DataContext);
   const [activeStudents, setActive] = useState([]);
+  const [showModal, setModal] = useState(false);
+
+  const handleOk = () => {
+    setModal(false);
+    notification.success({
+      message: "Attendance updated.",
+      placement: "topLeft",
+    });
+  };
 
   // populating list of active students
   useEffect(() => {
@@ -30,7 +41,20 @@ export default function ChallengeView() {
 
   return (
     <div>
-      <Card title="Score Tracker">
+      <Card
+        title="Score Tracker"
+        extra={
+          <Button
+            type="primary"
+            shape="round"
+            onClick={() => {
+              setModal(!showModal);
+            }}
+          >
+            Update Attendance
+          </Button>
+        }
+      >
         {activeStudents.length == 0 ? null : (
           <GridTrackerPage activeStudentsArr={activeStudents} />
         )}
@@ -45,6 +69,21 @@ export default function ChallengeView() {
           oneWay={true}
         /> */}
       </Card>
+      <Modal
+        visible={showModal}
+        title={`Select Present Students ${maxPts}`}
+        onOk={handleOk}
+        onCancel={() => {
+          setModal(false);
+        }}
+      >
+        <AttendanceBtnGroup
+          students={roster}
+          updateStudents={updateRoster}
+          setMaxPts={setMaxPts}
+          maxPts={maxPts}
+        />
+      </Modal>
     </div>
   );
 }
