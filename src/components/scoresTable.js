@@ -41,6 +41,10 @@ export default function ScoresTable({ activeStudentsArr }) {
   };
 
   const populateColumns = () => {
+    // workaround: updating attendance duplicates challenges
+    if (columns.length > 2) {
+      return;
+    }
     // temp copy
     const col = [...columns];
     let scores = {
