@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import HomePage from "./views/HomePage";
 import "antd/dist/antd.css";
-import ChallengeView from "./views/LiveClassPage";
+import LiveClassPage from "./views/LiveClassPage";
 
 export const DataContext = React.createContext();
 
@@ -48,7 +48,7 @@ export default function App() {
           path="/tracker"
           exact
           render={() => {
-            return <ChallengeView />;
+            return <LiveClassPage />;
           }}
         />
       </Switch>

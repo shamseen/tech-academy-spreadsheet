@@ -41,10 +41,6 @@ export default function ScoresTable({ activeStudentsArr }) {
   };
 
   const populateColumns = () => {
-    // workaround: updating attendance duplicates challenges
-    if (columns.length > 2) {
-      return;
-    }
     // temp copy
     const col = [...columns];
     let scores = {
@@ -76,9 +72,10 @@ export default function ScoresTable({ activeStudentsArr }) {
 
     for (let a in roster) {
       if (roster[a].present) {
-        const tempRow = { ...colKeys };
-        tempRow.name = a;
-        tempRows.push(tempRow);
+        tempRows.push({
+          name: a,
+          ...colKeys,
+        });
       }
     }
     // updating state
@@ -87,11 +84,12 @@ export default function ScoresTable({ activeStudentsArr }) {
   };
 
   useEffect(() => {
-    if (activeStudentsArr.length !== 0) {
-      populateColumns();
-      populateRows();
-    }
-  }, [roster]);
+    populateColumns();
+  }, []);
+
+  useEffect(() => {
+    populateRows();
+  }, [colKeys, roster]);
 
   return (
     <>

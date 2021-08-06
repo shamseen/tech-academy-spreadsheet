@@ -7,7 +7,7 @@ import AttendanceCard from "../components/attendanceCard";
 
 const { TabPane } = Tabs;
 
-export default function ChallengeView() {
+export default function LiveClassPage() {
   const { maxPts, nextPt, roster, challenges, resetData } =
     useContext(DataContext);
   const { updateRoster, setMaxPts } = useContext(DataContext);
@@ -44,7 +44,7 @@ export default function ChallengeView() {
         animated={true}
         tabBarExtraContent={{
           left: (
-            <Button danger type="text" onClick={resetData}>
+            <Button danger type="text" onClick={resetData} size="large">
               <Link to="/">Start a new class</Link>
             </Button>
           ),
