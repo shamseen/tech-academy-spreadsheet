@@ -71,7 +71,7 @@ export default function ChallengeView() {
       </Card>
       <Modal
         visible={showModal}
-        title={`Select Present Students ${maxPts}`}
+        title={`Who's present? (${maxPts})`}
         onOk={handleOk}
         onCancel={() => {
           setModal(false);

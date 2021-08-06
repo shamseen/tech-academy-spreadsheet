@@ -1,9 +1,9 @@
-import { Table } from "antd";
+import { Button, message, Table } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../App";
 
 export default function GridTrackerPage({ activeStudentsArr }) {
-  const { challenges, roster } = useContext(DataContext);
+  const { challenges, roster, updateRoster } = useContext(DataContext);
   const [rows, setRows] = useState([]);
 
   // array of all column names attached to initial score of 0
@@ -15,6 +15,15 @@ export default function GridTrackerPage({ activeStudentsArr }) {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (name, data, index) => (
+        <Button
+          onClick={() => {
+            assignPts(data, index);
+          }}
+        >
+          {name}
+        </Button>
+      ),
     },
 
     {
@@ -24,7 +33,18 @@ export default function GridTrackerPage({ activeStudentsArr }) {
     },
   ]);
 
+  const assignPts = (data, index) => {
+    message.info(`(TESTING) ${data.name} was clicked`);
+    const copyTableData = [...rows];
+    console.log("rows", JSON.stringify(columns, null, 2));
+    console.log("copy", JSON.stringify(copyTableData, null, 2));
+  };
+
   const populateColumns = () => {
+    // workaround: updating attendance duplicates challenges
+    if (columns.length > 2) {
+      return;
+    }
     // temp copy
     const col = [...columns];
     let scores = {
@@ -39,6 +59,7 @@ export default function GridTrackerPage({ activeStudentsArr }) {
         title: name,
         dataIndex: dataIndex,
         key: dataIndex,
+        ellipsis: true,
       });
 
       // saving key to set rows
@@ -60,9 +81,6 @@ export default function GridTrackerPage({ activeStudentsArr }) {
         tempRows.push(tempRow);
       }
     }
-
-    console.log(tempRows);
-
     // updating state
     // each row maps column key to student score
     setRows([...tempRows]);
@@ -72,7 +90,6 @@ export default function GridTrackerPage({ activeStudentsArr }) {
     if (activeStudentsArr.length !== 0) {
       populateColumns();
       populateRows();
-      console.log("useeffect");
     }
   }, [roster]);
 
@@ -82,4 +99,3 @@ export default function GridTrackerPage({ activeStudentsArr }) {
     </>
   );
 }
-// TO DO: router, redirect on submit (modal?), data table, attendance btn

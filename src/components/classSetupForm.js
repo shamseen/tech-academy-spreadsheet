@@ -62,7 +62,7 @@ export function ClassSetupForm() {
       </Item>
 
       {/* -- Student Absence Toggle -- */}
-      <Item name={"roster"} label="Select Students Present:">
+      <Item name={"roster"} label="Who is present?">
         <AttendanceBtnGroup
           students={rosterCopy}
           updateStudents={updateCopy}
