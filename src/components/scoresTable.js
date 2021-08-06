@@ -95,7 +95,7 @@ export default function ScoresTable({ activeStudentsArr }) {
 
   return (
     <>
-      <Table columns={columns} dataSource={rows} />
+      <Table columns={columns} dataSource={rows} pagination={false} />
     </>
   );
 }

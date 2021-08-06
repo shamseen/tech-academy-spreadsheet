@@ -3,6 +3,7 @@ import { Button, Card, message, PageHeader, Space, Tabs } from "antd";
 import { DataContext } from "../App";
 import ScoresTable from "../components/scoresTable";
 import { Link } from "react-router-dom";
+import AttendanceCard from "../components/attendanceCard";
 
 const { TabPane } = Tabs;
 
@@ -31,25 +32,6 @@ export default function ChallengeView() {
     setActive([...active]);
   }, [roster]);
 
-  /* -- Attendance functions -- */
-
-  const updateAttendance = (name, info) => {
-    // copying state var
-    const copy = { ...roster };
-
-    // updating copy and state
-    copy[name].present = !info;
-    updateRoster({ ...copy });
-
-    // max points to earn = number of students present
-    setMaxPts(copy[name].present ? maxPts + 1 : maxPts - 1);
-
-    // notifying user
-    message.success(
-      "Attendance updated! You can see the changes in the Score Tracker tab."
-    );
-  };
-
   return (
     <div id="live-class-page">
       <PageHeader className="site-page-header" title="Live Classroom" />
@@ -62,7 +44,7 @@ export default function ChallengeView() {
         animated={true}
         tabBarExtraContent={{
           left: (
-            <Button danger type="link" onClick={resetData}>
+            <Button danger type="text" onClick={resetData}>
               <Link to="/">Start a new class</Link>
             </Button>
           ),
@@ -75,21 +57,7 @@ export default function ChallengeView() {
 
         {/* -- Attendance tracking -- */}
         <TabPane tab="Attendance" key="2">
-          <h3>Who is here?</h3>
-          <Space wrap>
-            {Object.keys(roster).map((name) => {
-              const info = roster[name].present;
-              return (
-                <Button
-                  key={name}
-                  onClick={() => updateAttendance(name, info)}
-                  type={info ? "primary" : "ghost"}
-                >
-                  {name}
-                </Button>
-              );
-            })}
-          </Space>
+          <AttendanceCard />
         </TabPane>
       </Tabs>
     </div>
