@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { Button, Divider, Form, Input } from "antd";
 import { DataContext } from "../App";
-import AttendanceBtnGroup from "./attendanceBtnGroup";
 
 const { Item } = Form;
 
@@ -38,9 +37,6 @@ export function ClassSetupForm() {
     updateRoster({ ...rosterCopy });
 
     toggleModal(true);
-
-    // notifying user
-    // message.success("Class information saved!");
   };
 
   return (
@@ -55,26 +51,16 @@ export function ClassSetupForm() {
         <Input.TextArea />
       </Item>
 
-      {/* -- Attendance Input-- */}
+      {/* -- Attendance Input -- */}
       <Divider orientation="left">Attendance ({maxPts})</Divider>
       <Item name={"names"} label="Enter Names:" onChange={handleNameEntry}>
         <Input.TextArea autoSize={{ minRows: 3, maxRows: 3 }} />
       </Item>
 
-      {/* -- Student Absence Toggle -- */}
-      <Item name={"roster"} label="Who is present?">
-        <AttendanceBtnGroup
-          students={rosterCopy}
-          updateStudents={updateCopy}
-          setMaxPts={setMaxPts}
-          maxPts={maxPts}
-        />
-      </Item>
-
       {/* -- Submit Btn -- */}
       <Item>
         <Button type="primary" htmlType="submit">
-          Submit
+          Save
         </Button>
       </Item>
     </Form>

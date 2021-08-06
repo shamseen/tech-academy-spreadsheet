@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import HomePage from "./views/HomePage";
 import "antd/dist/antd.css";
-import ChallengeView from "./components/challengeView";
+import ChallengeView from "./views/LiveClassPage";
 
 export const DataContext = React.createContext();
 

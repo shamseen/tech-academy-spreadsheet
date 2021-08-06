@@ -2,7 +2,7 @@ import { Button, message, Table } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../App";
 
-export default function GridTrackerPage({ activeStudentsArr }) {
+export default function ScoresTable({ activeStudentsArr }) {
   const { challenges, roster, updateRoster } = useContext(DataContext);
   const [rows, setRows] = useState([]);
 
