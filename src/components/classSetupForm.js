@@ -9,12 +9,22 @@ export function ClassSetupForm() {
 
   // TO DO: add max pts to each challenge
   const saveChallenges = (str) => {
-    console.log(str);
     // parsing input
     const names = str.split("\t");
 
+    // data setup
+    const challenges = [];
+    names.forEach((name, i) => {
+      challenges.push({
+        title: name,
+        key: `challenge${i}`,
+        maxPts: 0,
+        nextPt: 0,
+      });
+    });
+
     // updating state
-    setChallenges([...names]);
+    setChallenges([...challenges]);
   };
 
   const saveStudents = (str) => {

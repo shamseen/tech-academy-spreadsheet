@@ -1,14 +1,15 @@
-import { Button, message, Table } from "antd";
+import { Table } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../App";
 
 export default function ScoresTable() {
   const { challenges, roster } = useContext(DataContext);
-  const [rows, setRows] = useState([]);
+  const [classScores, setScores] = useState([]);
+  const [attending, setAttending] = useState(0);
 
   // array of all column names attached to initial score of 0
   // then set to student "scores" prop
-  const [colKeys, setColKeys] = useState({});
+  const [challKeys, setChallKeys] = useState({});
 
   const [columns, setColumns] = useState([
     {
@@ -32,10 +33,10 @@ export default function ScoresTable() {
     student.total += 1;
 
     // copying and updating state
-    const tableDataCopy = [...rows];
+    const tableDataCopy = [...classScores];
     tableDataCopy[index] = { ...student };
 
-    setRows(tableDataCopy);
+    setScores(tableDataCopy);
   };
 
   const populateColumns = () => {
@@ -50,39 +51,42 @@ export default function ScoresTable() {
     };
 
     // adding challenge names to table columns
-    challenges.forEach((name, i) => {
-      const dataIndex = `challenge${i}`;
+    challenges.forEach((c, i) => {
       // adding column info
       col.push({
-        title: name,
-        dataIndex: dataIndex,
-        key: dataIndex,
-        ellipsis: true,
+        title: c.title,
+        dataIndex: c.key,
+        key: c.key,
+        ellipsis: true, // abbreviates long titles
       });
 
-      // saving key to set rows
-      scores[dataIndex] = 0;
+      // saving key to link to rows
+      scores[c.key] = 0;
     });
 
     // updating state
     setColumns([...col]);
-    setColKeys({ ...scores });
+    setChallKeys({ ...scores });
   };
 
   const populateRows = () => {
-    const tempRows = [];
+    const tempScores = [];
+    let copyAttend = 0;
 
     for (let a in roster) {
       if (roster[a].present) {
-        tempRows.push({
+        tempScores.push({
           name: a,
-          ...colKeys,
+          ...challKeys,
         });
+
+        copyAttend += 1; // tracking attendance num
       }
     }
     // updating state
     // each row maps column key to student score
-    setRows([...tempRows]);
+    setScores([...tempScores]);
+    setAttending(copyAttend);
   };
 
   useEffect(() => {
@@ -91,23 +95,22 @@ export default function ScoresTable() {
 
   useEffect(() => {
     populateRows();
-  }, [colKeys, roster]);
+    // updateMaxPts()
+  }, [challKeys, roster]);
 
   return (
-    <>
-      <Table
-        columns={columns}
-        dataSource={rows}
-        pagination={false}
-        bordered={true}
-        onRow={(row, index) => {
-          return {
-            onClick: () => {
-              assignPts(row, index);
-            },
-          };
-        }}
-      />
-    </>
+    <Table
+      columns={columns}
+      dataSource={classScores}
+      pagination={false}
+      bordered={true}
+      onRow={(row, index) => {
+        return {
+          onClick: () => {
+            assignPts(row, index);
+          },
+        };
+      }}
+    />
   );
 }
