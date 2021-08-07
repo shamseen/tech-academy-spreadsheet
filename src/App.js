@@ -48,7 +48,7 @@ export default function App() {
           path="/tracker"
           exact
           render={() => {
-            return <LiveClassPage />;
+            return <LiveClassPage resetData={resetData} />;
           }}
         />
       </Switch>

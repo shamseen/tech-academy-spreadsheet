@@ -2,8 +2,8 @@ import { Button, message, Table } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../App";
 
-export default function ScoresTable({ activeStudentsArr }) {
-  const { challenges, roster, updateRoster } = useContext(DataContext);
+export default function ScoresTable() {
+  const { challenges, roster } = useContext(DataContext);
   const [rows, setRows] = useState([]);
 
   // array of all column names attached to initial score of 0
@@ -15,29 +15,27 @@ export default function ScoresTable({ activeStudentsArr }) {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (name, data, index) => (
-        <Button
-          onClick={() => {
-            assignPts(data, index);
-          }}
-        >
-          {name}
-        </Button>
-      ),
+      align: "center",
     },
 
     {
       title: "Total",
       dataIndex: "total",
       key: "total",
+      align: "center",
     },
   ]);
 
-  const assignPts = (data, index) => {
-    message.info(`(TESTING) ${data.name} was clicked`);
-    const copyTableData = [...rows];
-    console.log("rows", JSON.stringify(columns, null, 2));
-    console.log("copy", JSON.stringify(copyTableData, null, 2));
+  const assignPts = (student, index) => {
+    // adding points
+    student.challenge1 += 1;
+    student.total += 1;
+
+    // copying and updating state
+    const tableDataCopy = [...rows];
+    tableDataCopy[index] = { ...student };
+
+    setRows(tableDataCopy);
   };
 
   const populateColumns = () => {
@@ -97,7 +95,19 @@ export default function ScoresTable({ activeStudentsArr }) {
 
   return (
     <>
-      <Table columns={columns} dataSource={rows} pagination={false} />
+      <Table
+        columns={columns}
+        dataSource={rows}
+        pagination={false}
+        bordered={true}
+        onRow={(row, index) => {
+          return {
+            onClick: () => {
+              assignPts(row, index);
+            },
+          };
+        }}
+      />
     </>
   );
 }

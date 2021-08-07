@@ -44,7 +44,10 @@ export default function AttendanceCard() {
         {Object.keys(rosterCopy).map((name) => {
           const present = rosterCopy[name].present;
           return (
-            <Card.Grid onClick={() => updateAttendance(name, present)}>
+            <Card.Grid
+              key={name}
+              onClick={() => updateAttendance(name, present)}
+            >
               <Alert
                 message={name}
                 type={present ? "success" : "info"}
