@@ -6,7 +6,7 @@ import { scoring } from "./scoringLogic";
 export default function ScoresTable() {
   const { challenges, setChallenges, roster } = useContext(DataContext);
   const [classScores, setScores] = useState([]);
-  const [attending, setAttending] = useState(0);
+  const [attending, setAttending] = useState([]);
 
   // array of all column names attached to initial score of 0
   // then set to student "scores" prop
@@ -82,25 +82,33 @@ export default function ScoresTable() {
   };
 
   const populateRows = () => {
-    const tempScores = [];
+    const tempScores = [...classScores];
+    const attendingCopy = [...attending];
 
-    for (let a in roster) {
-      if (roster[a].present) {
-        tempScores.push({
-          name: a,
-          nextChallenge: 0,
-          ...challKeys,
-        });
-      }
+    // grabbing students not already listed
+    const newStudents = Object.keys(roster).filter(
+      (name) => !attending.includes(name) && roster[name].present
+    );
+
+    for (let i = 0; i < newStudents.length; i++) {
+      const name = newStudents[i];
+      tempScores.push({
+        name: name,
+        nextChallenge: 0,
+        ...challKeys,
+      });
+
+      attendingCopy.push(name);
     }
+
     // updating state
-    setAttending(tempScores.length);
+    setAttending(attendingCopy);
     // each row maps column key to student score
     setScores([...tempScores]);
   };
 
   const updateMaxPts = () => {
-    const updated = scoring.updateMaxPts(challenges, attending);
+    const updated = scoring.updateMaxPts(challenges, attending.length);
     setChallenges(updated);
   };
 
@@ -113,6 +121,10 @@ export default function ScoresTable() {
 
   // filling table with students
   useEffect(() => {
+    // WORKAROUND
+    // stupid bug where the keys don't populate immediately.
+    if (challKeys.challenge1 == undefined) return;
+
     populateRows();
   }, [challKeys, roster]);
 
@@ -138,13 +150,13 @@ export default function ScoresTable() {
         }}
       />
 
-      {/* ---- TESTING DATA ----- */}
-      <hr />
-      <p>Students present: {attending}</p>
+      {/* ---- DEBUGGING ----- */}
+      {/* <hr />
+      <p>Students present: {attending.length}</p>
       <hr />
       {challenges.map((c, i) => {
         return <p>{`${c.title}: max(${c.maxPts}) next(${c.nextPt})`}</p>;
-      })}
+      })}*/}
     </div>
   );
 }
