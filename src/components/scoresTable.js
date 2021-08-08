@@ -30,15 +30,9 @@ export default function ScoresTable() {
 
   /* --- Functions --- */
   const assignPts = (student, index) => {
-    // adding points
-    student.challenge1 += 1;
-    student.total += 1;
+    const scoresCopy = scoring.assignPts(classScores, student, index);
 
-    // copying and updating state
-    const tableDataCopy = [...classScores];
-    tableDataCopy[index] = { ...student };
-
-    setScores(tableDataCopy);
+    setScores(scoresCopy);
   };
 
   const populateColumns = () => {
@@ -78,6 +72,7 @@ export default function ScoresTable() {
       if (roster[a].present) {
         tempScores.push({
           name: a,
+          nextChallenge: 0,
           ...challKeys,
         });
       }
