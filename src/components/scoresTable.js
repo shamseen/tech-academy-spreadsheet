@@ -30,9 +30,25 @@ export default function ScoresTable() {
 
   /* --- Functions --- */
   const assignPts = (student, index) => {
-    const scoresCopy = scoring.assignPts(classScores, student, index);
+    const targetChall = challenges[student.nextChallenge];
 
+    const scoresCopy = scoring.assignPts(
+      [...classScores],
+      { ...student },
+      index, // index to update
+      targetChall // for nextPt
+    );
+
+    // updating challenge's next pt
+    const challengesCopy = scoring.decrementChallenge(
+      challenges,
+      targetChall,
+      student.nextChallenge // index to update
+    );
+
+    // updating states
     setScores(scoresCopy);
+    setChallenges(challengesCopy);
   };
 
   const populateColumns = () => {
@@ -81,7 +97,6 @@ export default function ScoresTable() {
     setAttending(tempScores.length);
     // each row maps column key to student score
     setScores([...tempScores]);
-    console.log("update rows", attending);
   };
 
   const updateMaxPts = () => {

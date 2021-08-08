@@ -1,9 +1,7 @@
-const assignPts = (scores, student, index) => {
-  const assignTo = `challenge${student.nextChallenge}`;
-
-  // adding points
-  student[assignTo] += 1;
-  student.total += 1;
+const assignPts = (scores, student, index, targetChall) => {
+  // adding points based on chall's next point to assign
+  student[targetChall.key] += targetChall.nextPt;
+  student.total += targetChall.nextPt;
 
   // updating student's next challenge
   student.nextChallenge += 1; // TODO: stop at last challenge
@@ -15,13 +13,19 @@ const assignPts = (scores, student, index) => {
   return [...scores];
 };
 
-const decrementChallenge = (challenges, title) => {
-  // TO DO: stop at 1
-  // return state copy
+const decrementChallenge = (challenges, targetChall, index) => {
+  const nextPt = targetChall.nextPt;
+
+  // last students still get one point. never 0.
+  targetChall.nextPt = nextPt > 1 ? nextPt - 1 : 1;
+
+  // updating state
+  challenges[index] = targetChall;
+
+  return [...challenges];
 };
 
 const updateMaxPts = (challenges, attending) => {
-  console.log("update chall", attending);
   const newChallenges = challenges.map((c) => {
     // upon first render OR if no students have finished challenge
     if (c.maxPts === 0 || c.maxPts == c.nextPt) {
