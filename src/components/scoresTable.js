@@ -1,9 +1,10 @@
 import { Table } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../App";
+import { scoring } from "./scoringLogic";
 
 export default function ScoresTable() {
-  const { challenges, roster } = useContext(DataContext);
+  const { challenges, setChallenges, roster } = useContext(DataContext);
   const [classScores, setScores] = useState([]);
   const [attending, setAttending] = useState(0);
 
@@ -27,6 +28,7 @@ export default function ScoresTable() {
     },
   ]);
 
+  /* --- Functions --- */
   const assignPts = (student, index) => {
     // adding points
     student.challenge1 += 1;
@@ -51,7 +53,7 @@ export default function ScoresTable() {
     };
 
     // adding challenge names to table columns
-    challenges.forEach((c, i) => {
+    challenges.forEach((c) => {
       // adding column info
       col.push({
         title: c.title,
@@ -60,7 +62,7 @@ export default function ScoresTable() {
         ellipsis: true, // abbreviates long titles
       });
 
-      // saving key to link to rows
+      // key will be the link to rows
       scores[c.key] = 0;
     });
 
@@ -71,7 +73,6 @@ export default function ScoresTable() {
 
   const populateRows = () => {
     const tempScores = [];
-    let copyAttend = 0;
 
     for (let a in roster) {
       if (roster[a].present) {
@@ -79,38 +80,61 @@ export default function ScoresTable() {
           name: a,
           ...challKeys,
         });
-
-        copyAttend += 1; // tracking attendance num
       }
     }
     // updating state
+    setAttending(tempScores.length);
     // each row maps column key to student score
     setScores([...tempScores]);
-    setAttending(copyAttend);
+    console.log("update rows", attending);
   };
 
+  const updateMaxPts = () => {
+    const updated = scoring.updateMaxPts(challenges, attending);
+    setChallenges(updated);
+  };
+
+  /* --- Setup --- */
+
+  // filling columns on render
   useEffect(() => {
     populateColumns();
   }, []);
 
+  // filling table with students
   useEffect(() => {
     populateRows();
-    // updateMaxPts()
   }, [challKeys, roster]);
 
+  // changing maximum points for challenges
+  // after student is added
+  useEffect(() => {
+    updateMaxPts();
+  }, [attending]);
+
   return (
-    <Table
-      columns={columns}
-      dataSource={classScores}
-      pagination={false}
-      bordered={true}
-      onRow={(row, index) => {
-        return {
-          onClick: () => {
-            assignPts(row, index);
-          },
-        };
-      }}
-    />
+    <div>
+      <Table
+        columns={columns}
+        dataSource={classScores}
+        pagination={false}
+        bordered={true}
+        onRow={(row, index) => {
+          return {
+            onClick: () => {
+              assignPts(row, index);
+            },
+          };
+        }}
+      />
+
+      {/* ---- TESTING DATA ----- */}
+      <hr />
+      <p>Students present: {attending}</p>
+      <hr />
+      {challenges.map((c, i) => {
+        return <p>{`${c.title}: max(${c.maxPts}) next(${c.nextPt})`}</p>;
+      })}
+    </div>
   );
 }
