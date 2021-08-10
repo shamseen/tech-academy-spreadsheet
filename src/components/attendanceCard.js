@@ -13,9 +13,12 @@ export default function AttendanceCard() {
     updateRoster({ ...rosterCopy });
 
     // notifying user
-    message.success(
-      "Attendance updated! You can see the changes in the Score Tracker tab."
-    );
+    message.success({
+      content:
+        "Attendance updated! You can see the changes in the Score Tracker tab.",
+      className: "notif-saved",
+      duration: 2,
+    });
   };
 
   const updateAttendance = (name, info) => {
@@ -34,7 +37,13 @@ export default function AttendanceCard() {
   return (
     <>
       <Card
-        title="Who is here?"
+        title={
+          <Alert
+            type="warning"
+            message="Select all students present - remember to click save!"
+            showIcon
+          />
+        }
         actions={[
           <Button type="primary" onClick={saveData} size="large">
             Save

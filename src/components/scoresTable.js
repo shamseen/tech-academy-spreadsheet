@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Alert, Table } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../App";
 import { scoring } from "./scoringLogic";
@@ -139,6 +139,11 @@ export default function ScoresTable() {
 
   return (
     <div>
+      <Alert
+        type="info"
+        message="To assign points, click on the row with the correct student's name."
+        showIcon
+      />
       <Table
         columns={columns}
         dataSource={classScores}

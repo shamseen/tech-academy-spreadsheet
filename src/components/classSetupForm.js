@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { Button, Divider, Form, Input } from "antd";
+import { useContext } from "react";
+import { Alert, Button, Divider, Form, Input } from "antd";
 import { DataContext } from "../App";
 
 const { Item } = Form;
@@ -49,16 +49,22 @@ export function ClassSetupForm() {
   };
 
   return (
-    <Form layout="vertical" size="large" onFinish={handleSubmit}>
+    <Form size="large" onFinish={handleSubmit} id="class-setup-form">
+      <h2>Enter class information</h2>
+      <Alert
+        type="warning"
+        message="NOTE: Please copy and paste directly from the spreadsheet!"
+        showIcon
+      />
       {/* -- Challenges Input -- */}
-      <Divider orientation="left">Challenges</Divider>
-      <Item name={"challenges"} label="Enter Challenges:">
+      <Divider orientation="left">Challenge Names</Divider>
+      <Item name={"challenges"}>
         <Input.TextArea />
       </Item>
 
       {/* -- Attendance Input -- */}
-      <Divider orientation="left">Students</Divider>
-      <Item name={"names"} label="Enter Names:">
+      <Divider orientation="left">Student Names</Divider>
+      <Item name={"names"}>
         <Input.TextArea />
       </Item>
 
