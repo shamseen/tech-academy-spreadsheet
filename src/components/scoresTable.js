@@ -70,6 +70,9 @@ export default function ScoresTable() {
         dataIndex: c.key,
         key: c.key,
         ellipsis: true, // abbreviates long titles
+
+        // show non-zero scores (reduces clutter)
+        render: (val) => <div>{val == 0 ? "" : val}</div>,
       });
 
       // key will be the link to rows
@@ -141,6 +144,7 @@ export default function ScoresTable() {
         dataSource={classScores}
         pagination={false}
         bordered={true}
+        rowClassName="clickable-row" // changes cursor to pointer
         onRow={(row, index) => {
           return {
             onClick: () => {

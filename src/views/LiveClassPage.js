@@ -3,6 +3,7 @@ import { DataContext } from "../App";
 import ScoresTable from "../components/scoresTable";
 import { Link } from "react-router-dom";
 import AttendanceCard from "../components/attendanceCard";
+import "../styles/liveClassPage.scss";
 
 const { TabPane } = Tabs;
 
